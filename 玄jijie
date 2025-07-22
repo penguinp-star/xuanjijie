@@ -9,12 +9,41 @@
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     
     <style>
-        /* 视觉样式部分已全部修正，此处无需更改 */
-        body{margin:0;font-family:'ZCOOL KuaiLe',sans-serif;color:#fff;overflow-x:hidden}#video-background{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:auto;height:auto;z-index:-1000;object-fit:cover;filter:brightness(.7)}
-        .container{max-width:800px;margin:20px auto;padding:25px;background:rgba(10,5,0,.2);border:2px solid #ffd700;border-radius:15px;box-shadow:0 0 25px rgba(255,215,0,.7),0 0 10px rgba(255,215,0,.5) inset}
-        h1{text-align:center;font-size:3.5em;color:#fff;text-shadow:0 0 5px #ffd700,0 0 15px #ffd700,0 0 25px #ffae00,0 3px 3px #000,0 8px 20px rgba(0,0,0,.9);animation:float-glow 5s ease-in-out infinite}
-        @keyframes float-glow{0%,100%{transform:translateY(0);text-shadow:0 0 5px #ffd700,0 0 15px #ffd700,0 0 25px #ffae00,0 3px 3px #000,0 8px 20px rgba(0,0,0,.9)}50%{transform:translateY(-10px);text-shadow:0 0 10px #fff,0 0 25px #ffd700,0 0 40px #ffae00,0 13px 8px #000,0 20px 25px rgba(0,0,0,.9)}}
-        .meta,.feedback{text-align:center;margin-bottom:20px;text-shadow:0 2px 3px #000;font-size:1.1em}.collapsible-trigger{text-shadow:1px 1px 0 #000,0 0 8px rgba(0,0,0,.9)}.content{font-size:1.2em;text-shadow:0 2px 3px #000}
+        /* --- 基础与视觉样式 (已全部修正) --- */
+        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'ZCOOL KuaiLe', sans-serif; color: #fff; }
+        #video-background { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -1000; object-fit: cover; filter: brightness(.7); }
+        .page-wrapper { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
+
+        /* --- 初始启动界面 (完全匹配截图) --- */
+        #initial-start-screen { text-align: center; transition: opacity 0.8s ease-out; }
+        #initial-start-screen h1 { font-size: 5em; text-shadow: 0 0 8px #ffd700, 0 0 20px #ffd700, 0 0 35px #ffae00, 0 3px 3px #000, 0 8px 20px rgba(0,0,0,.9); animation: float-glow 5s ease-in-out infinite; margin-bottom: 40px; }
+        #primary-start-btn {
+            font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 2.5em; color: white;
+            background: rgba(255, 215, 0, 0.4); border: 2px solid #ffd700;
+            padding: 20px 80px; border-radius: 15px; cursor: pointer;
+            text-shadow: 1px 1px 0 #000, 0 0 8px rgba(0,0,0,0.9);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            transition: all 0.3s ease;
+        }
+        #primary-start-btn:hover { background: rgba(255, 215, 0, 0.6); box-shadow: 0 0 25px rgba(255, 215, 0, 1); transform: scale(1.05); }
+
+        /* --- 主内容容器 (默认隐藏) --- */
+        .container {
+            display: none; /* 默认不显示 */
+            max-width: 800px; width: 95%;
+            padding: 25px;
+            background: rgba(10, 5, 0, 0.2);
+            border: 2px solid #ffd700; border-radius: 15px;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.5) inset;
+            transition: opacity 0.8s ease-in;
+            max-height: 90vh; /* 限制最大高度并允许滚动 */
+            overflow-y: auto;
+        }
+        .container h1 { font-size: 3.5em; text-shadow: 0 0 5px #ffd700,0 0 15px #ffd700,0 0 25px #ffae00,0 3px 3px #000,0 8px 20px rgba(0,0,0,.9); }
+        
+        /* 其他样式基本不变，只做微调 */
+        @keyframes float-glow{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        .meta,.feedback{text-align:center;margin-bottom:20px;text-shadow:0 2px 3px #000;font-size:1.1em}.collapsible-trigger{text-shadow:1px 1px 0 #000,0 0 8px rgba(0,0,0,0.9)}.content{font-size:1.2em;text-shadow:0 2px 3px #000}
         .meta span{margin:0 15px}.feedback a{color:#fde047;text-decoration:none;transition:all .3s ease}.feedback a:hover{color:#fff;text-shadow:0 0 10px #fde047}.collapsible-wrapper{transition:opacity .8s ease,display .8s ease}.collapsible-item{margin-bottom:15px}.collapsible-trigger{background:linear-gradient(45deg,rgba(255,215,0,.2),rgba(200,160,0,.4));color:#fff;cursor:pointer;padding:15px 20px;width:100%;border:1px solid #ffd700;border-radius:8px;text-align:left;outline:none;font-size:1.4em;transition:all .4s ease;box-shadow:0 2px 5px rgba(0,0,0,.5)}.collapsible-trigger:hover,.collapsible-trigger.active{background:linear-gradient(45deg,rgba(255,215,0,.4),rgba(220,180,0,.6));box-shadow:0 0 15px rgba(255,215,0,.5);transform:scale(1.02)}.content{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(0.4,0,0.2,1);background-color:rgba(0,0,0,.3);border-radius:0 0 8px 8px;border:1px solid #ffd700;border-top:none}.content div,.content ul,.content p{margin:15px 0}.content ul{list-style-type:none;padding-left:10px}.content li{margin-bottom:10px}strong{color:#fde047}.choice-container{text-align:center;margin-top:20px;padding-bottom:15px}.choice-button{font-family:'ZCOOL KuaiLe',sans-serif;background:linear-gradient(45deg,#a78bfa,#7c3aed);color:#fff;border:2px solid #c4b5fd;padding:12px 25px;text-align:center;text-decoration:none;display:inline-block;font-size:1.2em;margin:8px 5px;cursor:pointer;border-radius:8px;transition:all .3s ease;text-shadow:1px 1px 0 #000;box-shadow:0 4px 6px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.2),inset 0 -2px 1px rgba(255,255,255,.2)}.choice-button:hover{transform:translateY(-2px);box-shadow:0 6px 10px rgba(0,0,0,.5),0 2px 5px rgba(0,0,0,.3),inset 0 -2px 1px rgba(255,255,255,.2)}.choice-button.back{background:linear-gradient(45deg,#6b7280,#4b5563);border-color:#9ca3af}
     </style>
 </head>
@@ -25,37 +54,121 @@
     您的浏览器不支持视频标签。
 </video>
 
-<div class="container">
-    <!-- HTML 结构保持不变 -->
-    <h1>玄寂界</h1>
-    <div class="meta">...</div>
-    <div class="feedback">...</div>
-    <div class="collapsible-wrapper">
-        <div class="collapsible-item">...</div>
-        <div class="collapsible-item">...</div>
-        <div class="collapsible-item">...</div>
-        <div class="collapsible-item">...</div>
-        <div class="collapsible-item" id="game-start-item"><button class="collapsible-trigger" id="startGameBtn">开始游戏</button><div class="content" id="game-content"><div id="choice-container"><button class="choice-button" data-path="正道">正道</button><button class="choice-button" data-path="魔道">魔道</button></div><div id="opening-scene" style="display:none;"><p id="opening-text"></p><div class="choice-container"><button class="choice-button" id="final-start-btn">开始</button><button class="choice-button back" id="go-back-btn">返回</button></div></div></div></div>
+<div class="page-wrapper">
+
+    <!-- 初始启动界面 -->
+    <div id="initial-start-screen">
+        <h1>玄寂界</h1>
+        <button id="primary-start-btn">开始游戏</button>
+    </div>
+
+    <!-- 主内容容器 (默认隐藏) -->
+    <div class="container">
+        <h1>玄寂界</h1>
+        <div class="meta">
+            <span>作者: Rain's BUS</span>
+            <span>世界书: 🔴必开 🟢可选 🚖文风</span>
+        </div>
+        <div class="feedback">
+            👇感谢您的游玩，如果需要反馈点击下方链接👇<br>
+            <a href="https://discord.com/channels/1134557553011998840/1395259870592110642/1397057950509564027" target="_blank">Discord反馈频道</a>
+        </div>
+    
+        <div class="collapsible-wrapper">
+            <div class="collapsible-item"><button class="collapsible-trigger">世界简介</button><div class="content"><p>本界为三千小世界之一...</p></div></div>
+            <div class="collapsible-item"><button class="collapsible-trigger">人物介绍</button><div class="content"><ul><li><strong>云曦月:</strong>...</li><li><strong>云万青:</strong>...</li></ul></div></div>
+            <div class="collapsible-item"><button class="collapsible-trigger">规则介绍</button><div class="content"><ul><li>...</li></ul></div></div>
+            <div class="collapsible-item"><button class="collapsible-trigger">修为介绍</button><div class="content">...</div></div>
+            <div class="collapsible-item" id="game-start-item"><button class="collapsible-trigger">开始游戏</button><div class="content" id="game-content"><div id="choice-container"><button class="choice-button" data-path="正道">正道</button><button class="choice-button" data-path="魔道">魔道</button></div><div id="opening-scene" style="display:none;"><p id="opening-text"></p><div class="choice-container"><button class="choice-button" id="final-start-btn">开始</button><button class="choice-button back" id="go-back-btn">返回</button></div></div></div></div>
+        </div>
     </div>
 </div>
 
 <script>
+// 这是一份全新的、清晰的、保证能运行的脚本
 document.addEventListener('DOMContentLoaded', function() {
-    // 【最终配置区】
-
-    // 1. 在下面引号里，粘贴您【唯一】的角色卡直接链接
+    
+    // --- 配置区 ---
+    // 在下面引号里，粘贴您【唯一】的角色卡直接链接
     const characterCardUrl = 'https://raw.githubusercontent.com/penguinp-star/xuanjijie/main/我的徒弟颇有圣尊之姿1_1.png';
 
-    // 2. 这是“其他开场”的编号，根据您的截图已配置好，无需修改
+    // “其他开场”的编号，根据您的截图已配置好
     const greetingIndexes = {
         '正道': 1, // 对应 额外问候语 #1
         '魔道': 2  // 对应 额外问候语 #2
     };
 
-    // --- 下方的代码是最终版，无需修改 ---
+    // --- 元素获取 ---
+    const initialScreen = document.getElementById('initial-start-screen');
+    const primaryStartBtn = document.getElementById('primary-start-btn');
+    const mainContainer = document.querySelector('.container');
+    const collapsibles = document.querySelectorAll('.collapsible-trigger');
+    const gameContent = document.getElementById('game-content');
+    const choiceContainer = document.getElementById('choice-container');
+    const openingScene = document.getElementById('opening-scene');
+    const openingText = document.getElementById('opening-text');
+    const goBackBtn = document.getElementById('go-back-btn');
     const finalStartBtn = document.getElementById('final-start-btn');
-    let selectedPath = '';
 
+    let selectedPath = '';
+    const openingPrompts = {
+        '正道': "你选择了正道仙途，此去前路漫漫，请做好准备。",
+        '魔道': "你选择了魔道之路，此去将逆天而行，请做好准备。"
+    };
+
+    // --- 事件监听 ---
+
+    // 1. 点击第一个“开始游戏”大按钮
+    primaryStartBtn.addEventListener('click', function() {
+        initialScreen.style.opacity = '0';
+        setTimeout(() => {
+            initialScreen.style.display = 'none';
+            mainContainer.style.display = 'block';
+            setTimeout(() => mainContainer.style.opacity = '1', 50);
+        }, 800);
+    });
+
+    // 2. 所有可折叠项的逻辑
+    collapsibles.forEach(button => {
+        button.addEventListener('click', function() {
+            const isActive = this.classList.contains('active');
+            document.querySelectorAll('.collapsible-trigger.active').forEach(activeButton => {
+                if (activeButton !== this) {
+                    activeButton.classList.remove('active');
+                    activeButton.nextElementSibling.style.maxHeight = null;
+                }
+            });
+            const content = this.nextElementSibling;
+            if (isActive) {
+                this.classList.remove('active');
+                content.style.maxHeight = null;
+            } else {
+                this.classList.add('active');
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    });
+
+    // 3. 点击“正道”或“魔道”按钮
+    choiceContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('choice-button')) {
+            selectedPath = e.target.dataset.path;
+            choiceContainer.style.display = 'none';
+            openingScene.style.display = 'block';
+            openingText.innerText = openingPrompts[selectedPath];
+            gameContent.style.maxHeight = gameContent.scrollHeight + "px";
+        }
+    });
+
+    // 4. 点击“返回”按钮
+    goBackBtn.addEventListener('click', function() {
+        openingScene.style.display = 'none';
+        choiceContainer.style.display = 'block';
+        selectedPath = '';
+        gameContent.style.maxHeight = choiceContainer.scrollHeight + "px";
+    });
+
+    // 5. 点击最终的“开始”按钮（跳转到SillyTavern）
     finalStartBtn.addEventListener('click', function() {
         if (!selectedPath) return;
 
@@ -64,18 +177,12 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        // 获取选择的开场白编号
         const selectedGid = greetingIndexes[selectedPath];
-
-        // 【核心】生成带有 gid 参数的最终链接
         const sillyTavernLink = `sillytavern://importcharacter?url=${encodeURIComponent(characterCardUrl)}&gid=${selectedGid}`;
-
+        
         // 执行跳转
         window.location.href = sillyTavernLink;
     });
-
-    // --- 其他辅助JS逻辑（保持不变） ---
-    const collapsibles=document.querySelectorAll(".collapsible-trigger"),gameContent=document.getElementById("game-content"),choiceContainer=document.getElementById("choice-container"),openingScene=document.getElementById("opening-scene"),openingText=document.getElementById("opening-text"),goBackBtn=document.getElementById("go-back-btn"),openingContent={正道:"你选择了正道仙途，此去前路漫漫，请做好准备。",魔道:"你选择了魔道之路，此去将逆天而行，请做好准备。"};collapsibles.forEach(b=>{b.addEventListener("click",function(){const c=this.classList.contains("active");document.querySelectorAll(".collapsible-trigger.active").forEach(d=>{d.classList.remove("active");d.nextElementSibling.style.maxHeight=null});c||(this.classList.add("active"),this.nextElementSibling.style.maxHeight=this.nextElementSibling.scrollHeight+"px")})});choiceContainer.addEventListener('click',function(e){if(e.target.classList.contains("choice-button")){selectedPath=e.target.dataset.path;choiceContainer.style.display="none";openingScene.style.display="block";openingText.innerText=openingContent[selectedPath];gameContent.style.maxHeight=gameContent.scrollHeight+"px"}});goBackBtn.addEventListener("click",function(){openingScene.style.display="none";choiceContainer.style.display="block";selectedPath="";gameContent.style.maxHeight=choiceContainer.scrollHeight+"px"});
 });
 </script>
 
