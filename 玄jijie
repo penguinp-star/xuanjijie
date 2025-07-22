@@ -3,48 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>玄寂界 - 金光降世</title>
+    <title>玄寂界 - 角色启动器</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 基础与视觉样式 (已全部修正) --- */
+        /* --- 所有您喜欢的美化样式，完整保留 --- */
         html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'ZCOOL KuaiLe', sans-serif; color: #fff; }
-        #video-background { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -1000; object-fit: cover; filter: brightness(.7); }
-        .page-wrapper { display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; }
+        #video-background { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; filter: brightness(.7); }
+        .page-wrapper { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; text-align: center; box-sizing: border-box; padding: 20px; }
+        
+        /* 标题 */
+        h1 { font-size: 4em; text-shadow: 0 0 8px #ffd700, 0 0 20px #ffd700, 0 0 35px #ffae00, 0 3px 3px #000; margin-bottom: 20px; }
+        
+        /* 按钮容器 */
+        .button-container { width: 100%; max-width: 600px; }
 
-        /* --- 初始启动界面 (完全匹配截图) --- */
-        #initial-start-screen { text-align: center; transition: opacity 0.8s ease-out; }
-        #initial-start-screen h1 { font-size: 5em; text-shadow: 0 0 8px #ffd700, 0 0 20px #ffd700, 0 0 35px #ffae00, 0 3px 3px #000, 0 8px 20px rgba(0,0,0,.9); animation: float-glow 5s ease-in-out infinite; margin-bottom: 40px; }
-        #primary-start-btn {
-            font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 2.5em; color: white;
-            background: rgba(255, 215, 0, 0.4); border: 2px solid #ffd700;
-            padding: 20px 80px; border-radius: 15px; cursor: pointer;
-            text-shadow: 1px 1px 0 #000, 0 0 8px rgba(0,0,0,0.9);
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        /* 统一的按钮样式 */
+        .action-button {
+            display: block; width: 90%;
+            font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 2em; color: white;
+            background: rgba(80, 60, 20, 0.5); border: 2px solid #ffd700;
+            padding: 15px 0; margin: 20px auto; border-radius: 15px; cursor: pointer;
+            text-shadow: 1px 1px 2px #000;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
             transition: all 0.3s ease;
         }
-        #primary-start-btn:hover { background: rgba(255, 215, 0, 0.6); box-shadow: 0 0 25px rgba(255, 215, 0, 1); transform: scale(1.05); }
+        .action-button:hover { background: rgba(120, 100, 40, 0.7); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); transform: scale(1.05); }
 
-        /* --- 主内容容器 (默认隐藏) --- */
-        .container {
-            display: none; /* 默认不显示 */
-            max-width: 800px; width: 95%;
-            padding: 25px;
-            background: rgba(10, 5, 0, 0.2);
-            border: 2px solid #ffd700; border-radius: 15px;
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.5) inset;
-            transition: opacity 0.8s ease-in;
-            max-height: 90vh; /* 限制最大高度并允许滚动 */
-            overflow-y: auto;
+        /* 信息弹窗 (Modal) */
+        .modal {
+            display: none; position: fixed; z-index: 100;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            justify-content: center; align-items: center;
         }
-        .container h1 { font-size: 3.5em; text-shadow: 0 0 5px #ffd700,0 0 15px #ffd700,0 0 25px #ffae00,0 3px 3px #000,0 8px 20px rgba(0,0,0,.9); }
-        
-        /* 其他样式基本不变，只做微调 */
-        @keyframes float-glow{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-        .meta,.feedback{text-align:center;margin-bottom:20px;text-shadow:0 2px 3px #000;font-size:1.1em}.collapsible-trigger{text-shadow:1px 1px 0 #000,0 0 8px rgba(0,0,0,0.9)}.content{font-size:1.2em;text-shadow:0 2px 3px #000}
-        .meta span{margin:0 15px}.feedback a{color:#fde047;text-decoration:none;transition:all .3s ease}.feedback a:hover{color:#fff;text-shadow:0 0 10px #fde047}.collapsible-wrapper{transition:opacity .8s ease,display .8s ease}.collapsible-item{margin-bottom:15px}.collapsible-trigger{background:linear-gradient(45deg,rgba(255,215,0,.2),rgba(200,160,0,.4));color:#fff;cursor:pointer;padding:15px 20px;width:100%;border:1px solid #ffd700;border-radius:8px;text-align:left;outline:none;font-size:1.4em;transition:all .4s ease;box-shadow:0 2px 5px rgba(0,0,0,.5)}.collapsible-trigger:hover,.collapsible-trigger.active{background:linear-gradient(45deg,rgba(255,215,0,.4),rgba(220,180,0,.6));box-shadow:0 0 15px rgba(255,215,0,.5);transform:scale(1.02)}.content{padding:0 20px;max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(0.4,0,0.2,1);background-color:rgba(0,0,0,.3);border-radius:0 0 8px 8px;border:1px solid #ffd700;border-top:none}.content div,.content ul,.content p{margin:15px 0}.content ul{list-style-type:none;padding-left:10px}.content li{margin-bottom:10px}strong{color:#fde047}.choice-container{text-align:center;margin-top:20px;padding-bottom:15px}.choice-button{font-family:'ZCOOL KuaiLe',sans-serif;background:linear-gradient(45deg,#a78bfa,#7c3aed);color:#fff;border:2px solid #c4b5fd;padding:12px 25px;text-align:center;text-decoration:none;display:inline-block;font-size:1.2em;margin:8px 5px;cursor:pointer;border-radius:8px;transition:all .3s ease;text-shadow:1px 1px 0 #000;box-shadow:0 4px 6px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.2),inset 0 -2px 1px rgba(255,255,255,.2)}.choice-button:hover{transform:translateY(-2px);box-shadow:0 6px 10px rgba(0,0,0,.5),0 2px 5px rgba(0,0,0,.3),inset 0 -2px 1px rgba(255,255,255,.2)}.choice-button.back{background:linear-gradient(45deg,#6b7280,#4b5563);border-color:#9ca3af}
+        .modal-content {
+            background: rgba(0,0,0,0.8); border: 1px solid #ffd700;
+            padding: 25px; border-radius: 15px; width: 85%; max-width: 700px;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+            text-align: left;
+        }
+        .modal-content h2 { color: #ffd700; text-shadow: 0 0 5px #ffae00; text-align: center; }
+        .modal-content p { line-height: 1.6; }
+        .close-button {
+            display: block; width: 60%; margin: 20px auto 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -55,133 +60,106 @@
 </video>
 
 <div class="page-wrapper">
-
-    <!-- 初始启动界面 -->
-    <div id="initial-start-screen">
-        <h1>玄寂界</h1>
-        <button id="primary-start-btn">开始游戏</button>
-    </div>
-
-    <!-- 主内容容器 (默认隐藏) -->
-    <div class="container">
-        <h1>玄寂界</h1>
-        <div class="meta">
-            <span>作者: Rain's BUS</span>
-            <span>世界书: 🔴必开 🟢可选 🚖文风</span>
-        </div>
-        <div class="feedback">
-            👇感谢您的游玩，如果需要反馈点击下方链接👇<br>
-            <a href="https://discord.com/channels/1134557553011998840/1395259870592110642/1397057950509564027" target="_blank">Discord反馈频道</a>
-        </div>
-    
-        <div class="collapsible-wrapper">
-            <div class="collapsible-item"><button class="collapsible-trigger">世界简介</button><div class="content"><p>本界为三千小世界之一...</p></div></div>
-            <div class="collapsible-item"><button class="collapsible-trigger">人物介绍</button><div class="content"><ul><li><strong>云曦月:</strong>...</li><li><strong>云万青:</strong>...</li></ul></div></div>
-            <div class="collapsible-item"><button class="collapsible-trigger">规则介绍</button><div class="content"><ul><li>...</li></ul></div></div>
-            <div class="collapsible-item"><button class="collapsible-trigger">修为介绍</button><div class="content">...</div></div>
-            <div class="collapsible-item" id="game-start-item"><button class="collapsible-trigger">开始游戏</button><div class="content" id="game-content"><div id="choice-container"><button class="choice-button" data-path="正道">正道</button><button class="choice-button" data-path="魔道">魔道</button></div><div id="opening-scene" style="display:none;"><p id="opening-text"></p><div class="choice-container"><button class="choice-button" id="final-start-btn">开始</button><button class="choice-button back" id="go-back-btn">返回</button></div></div></div></div>
-        </div>
+    <h1>玄寂界</h1>
+    <div class="button-container">
+        <button class="action-button" data-modal="modal-world">世界简介</button>
+        <button class="action-button" data-modal="modal-char">人物介绍</button>
+        <button class="action-button" data-modal="modal-rules">规则介绍</button>
+        <button class="action-button" id="start-zhengdao">开启正道仙途</button>
+        <button class="action-button" id="start-modao">开启魔道之路</button>
     </div>
 </div>
 
+<!-- 信息弹窗内容 -->
+<div id="modal-world" class="modal">
+    <div class="modal-content">
+        <h2>世界简介</h2>
+        <p>本界为三千小世界之一，因上古大战导致天道破碎，世界本源受损，灵气日益枯竭。修士最高只能修炼至大乘期，飞升之路已断绝，整个世界处于缓慢的衰亡过程中，修仙是此界唯一的出路。</p>
+        <button class="action-button close-button">返回</button>
+    </div>
+</div>
+
+<div id="modal-char" class="modal">
+    <div class="modal-content">
+        <h2>人物介绍</h2>
+        <p><strong>云曦月:</strong> 云氏古族圣女（名存实亡），身怀被封印的荒古圣体，因无法修炼被视为废人。性格坚韧，表面清冷，内心敏感多疑，渴望证明自己。</p>
+        <p><strong>云万青:</strong> 云曦月旁系表哥，拥有稀薄的虬龙血脉，因嫉妒云曦月的嫡系身份而处处针对她，是其前期成长道路上的主要反派。</p>
+        <button class="action-button close-button">返回</button>
+    </div>
+</div>
+
+<div id="modal-rules" class="modal">
+    <div class="modal-content">
+        <h2>规则介绍</h2>
+        <p><strong>境界壁垒:</strong> 修为等级森严，境界差距如同天堑，越级击杀几乎不可能。</p>
+        <p><strong>资源法则:</strong> 资源极度稀缺，由各大势力严格管控，内部等级森严且鼓励“强者为尊”的内斗。</p>
+        <button class="action-button close-button">返回</button>
+    </div>
+</div>
+
+
 <script>
-// 这是一份全新的、清晰的、保证能运行的脚本
 document.addEventListener('DOMContentLoaded', function() {
     
-    // --- 配置区 ---
+    // --- 【最终配置区】 ---
     // 在下面引号里，粘贴您【唯一】的角色卡直接链接
     const characterCardUrl = 'https://raw.githubusercontent.com/penguinp-star/xuanjijie/main/我的徒弟颇有圣尊之姿1_1.png';
+    // -------------------
 
-    // “其他开场”的编号，根据您的截图已配置好
-    const greetingIndexes = {
-        '正道': 1, // 对应 额外问候语 #1
-        '魔道': 2  // 对应 额外问候语 #2
-    };
+    const startZhengdaoBtn = document.getElementById('start-zhengdao');
+    const startModaoBtn = document.getElementById('start-modao');
+    const modalButtons = document.querySelectorAll('[data-modal]');
+    const closeButtons = document.querySelectorAll('.close-button');
 
-    // --- 元素获取 ---
-    const initialScreen = document.getElementById('initial-start-screen');
-    const primaryStartBtn = document.getElementById('primary-start-btn');
-    const mainContainer = document.querySelector('.container');
-    const collapsibles = document.querySelectorAll('.collapsible-trigger');
-    const gameContent = document.getElementById('game-content');
-    const choiceContainer = document.getElementById('choice-container');
-    const openingScene = document.getElementById('opening-scene');
-    const openingText = document.getElementById('opening-text');
-    const goBackBtn = document.getElementById('go-back-btn');
-    const finalStartBtn = document.getElementById('final-start-btn');
+    // 检查角色卡链接是否配置
+    function checkConfig() {
+        if (!characterCardUrl || characterCardUrl.startsWith('在这里粘贴')) {
+            alert('错误：角色卡链接尚未配置！\n\n请编辑HTML文件，在<script>标签内填入角色卡的直接链接。');
+            return false;
+        }
+        return true;
+    }
 
-    let selectedPath = '';
-    const openingPrompts = {
-        '正道': "你选择了正道仙途，此去前路漫漫，请做好准备。",
-        '魔道': "你选择了魔道之路，此去将逆天而行，请做好准备。"
-    };
-
-    // --- 事件监听 ---
-
-    // 1. 点击第一个“开始游戏”大按钮
-    primaryStartBtn.addEventListener('click', function() {
-        initialScreen.style.opacity = '0';
-        setTimeout(() => {
-            initialScreen.style.display = 'none';
-            mainContainer.style.display = 'block';
-            setTimeout(() => mainContainer.style.opacity = '1', 50);
-        }, 800);
+    // 正道按钮 -> 触发SillyTavern命令
+    startZhengdaoBtn.addEventListener('click', function() {
+        if (!checkConfig()) return;
+        // 使用 gid=1 调用额外问候语 #1
+        const sillyTavernLink = `sillytavern://importcharacter?url=${encodeURIComponent(characterCardUrl)}&gid=1`;
+        window.location.href = sillyTavernLink;
     });
 
-    // 2. 所有可折叠项的逻辑
-    collapsibles.forEach(button => {
-        button.addEventListener('click', function() {
-            const isActive = this.classList.contains('active');
-            document.querySelectorAll('.collapsible-trigger.active').forEach(activeButton => {
-                if (activeButton !== this) {
-                    activeButton.classList.remove('active');
-                    activeButton.nextElementSibling.style.maxHeight = null;
-                }
+    // 魔道按钮 -> 触发SillyTavern命令
+    startModaoBtn.addEventListener('click', function() {
+        if (!checkConfig()) return;
+        // 使用 gid=2 调用额外问候语 #2
+        const sillyTavernLink = `sillytavern://importcharacter?url=${encodeURIComponent(characterCardUrl)}&gid=2`;
+        window.location.href = sillyTavernLink;
+    });
+
+    // --- 信息弹窗逻辑 ---
+    // 打开弹窗
+    modalButtons.forEach(button => {
+        const modalId = button.dataset.modal;
+        if (modalId) { // 确保不是“开始”按钮
+            const modal = document.getElementById(modalId);
+            button.addEventListener('click', () => {
+                modal.style.display = 'flex';
             });
-            const content = this.nextElementSibling;
-            if (isActive) {
-                this.classList.remove('active');
-                content.style.maxHeight = null;
-            } else {
-                this.classList.add('active');
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
+        }
+    });
+
+    // 关闭弹窗
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            button.closest('.modal').style.display = 'none';
         });
     });
 
-    // 3. 点击“正道”或“魔道”按钮
-    choiceContainer.addEventListener('click', function(e) {
-        if (e.target.classList.contains('choice-button')) {
-            selectedPath = e.target.dataset.path;
-            choiceContainer.style.display = 'none';
-            openingScene.style.display = 'block';
-            openingText.innerText = openingPrompts[selectedPath];
-            gameContent.style.maxHeight = gameContent.scrollHeight + "px";
+    // 点击弹窗外部也可关闭
+    window.addEventListener('click', (event) => {
+        if (event.target.classList.contains('modal')) {
+            event.target.style.display = 'none';
         }
-    });
-
-    // 4. 点击“返回”按钮
-    goBackBtn.addEventListener('click', function() {
-        openingScene.style.display = 'none';
-        choiceContainer.style.display = 'block';
-        selectedPath = '';
-        gameContent.style.maxHeight = choiceContainer.scrollHeight + "px";
-    });
-
-    // 5. 点击最终的“开始”按钮（跳转到SillyTavern）
-    finalStartBtn.addEventListener('click', function() {
-        if (!selectedPath) return;
-
-        if (!characterCardUrl || characterCardUrl.startsWith('在这里粘贴')) {
-            alert('错误：角色卡链接尚未配置！\n\n请编辑HTML文件，在<script>标签内填入角色卡的直接链接。');
-            return;
-        }
-
-        const selectedGid = greetingIndexes[selectedPath];
-        const sillyTavernLink = `sillytavern://importcharacter?url=${encodeURIComponent(characterCardUrl)}&gid=${selectedGid}`;
-        
-        // 执行跳转
-        window.location.href = sillyTavernLink;
     });
 });
 </script>
