@@ -168,7 +168,7 @@
 <!-- 视频背景 -->
 <video autoplay muted loop id="video-background">
     <!-- 请将 'YOUR_VIDEO.mp4' 替换成你的视频文件路径 -->
-    <source src="YOUR_VIDEO.mp4" type="video/mp4">
+    <source src="https://raw.githubusercontent.com/penguinp-star/xuanjijie/main/lv_0_20250722185633.mp4" type="video/mp4">
     您的浏览器不支持视频标签。
 </video>
 
