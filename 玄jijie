@@ -3,53 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>玄寂界 - 角色启动器</title>
+    <title>玄寂界 - 金光降世</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 所有您喜欢的美化样式，完整保留 --- */
-        html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'ZCOOL KuaiLe', sans-serif; color: #fff; }
-        #video-background { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); min-width: 100%; min-height: 100%; z-index: -1; object-fit: cover; filter: brightness(.7); }
-        .page-wrapper { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%; height: 100%; text-align: center; box-sizing: border-box; padding: 20px; }
-        
-        /* 标题 */
-        h1 { font-size: 4em; text-shadow: 0 0 8px #ffd700, 0 0 20px #ffd700, 0 0 35px #ffae00, 0 3px 3px #000; margin-bottom: 20px; }
-        
-        /* 按钮容器 */
-        .button-container { width: 100%; max-width: 600px; }
+        /* 基础与视频背景设置 */
+        body {
+            margin: 0;
+            font-family: 'ZCOOL KuaiLe', sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+        }
 
-        /* 统一的按钮样式 */
-        .action-button {
-            display: block; width: 90%;
-            font-family: 'ZCOOL KuaiLe', sans-serif; font-size: 2em; color: white;
-            background: rgba(80, 60, 20, 0.5); border: 2px solid #ffd700;
-            padding: 15px 0; margin: 20px auto; border-radius: 15px; cursor: pointer;
-            text-shadow: 1px 1px 2px #000;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            transition: all 0.3s ease;
+        #video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1000;
+            /* 【修正】确保视频居中并覆盖全屏的关键样式 */
+            object-fit: cover;
         }
-        .action-button:hover { background: rgba(120, 100, 40, 0.7); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); transform: scale(1.05); }
 
-        /* 信息弹窗 (Modal) */
-        .modal {
-            display: none; position: fixed; z-index: 100;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            justify-content: center; align-items: center;
+        /* 核心容器 */
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 25px;
+            /* 【修正】已移除 backdrop-filter，并调整为半透明黑色背景，以看清视频 */
+            background: rgba(0, 0, 0, 0.45);
+            border: 2px solid #ffd700;
+            border-radius: 15px;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.5) inset;
         }
-        .modal-content {
-            background: rgba(0,0,0,0.8); border: 1px solid #ffd700;
-            padding: 25px; border-radius: 15px; width: 85%; max-width: 700px;
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
-            text-align: left;
+
+        /* 标题 - 仙气飘飘、金光、立体感 */
+        h1 {
+            text-align: center;
+            font-size: 3.5em;
+            color: #fff;
+            text-shadow: 0 0 5px #ffd700, 0 0 15px #ffd700, 0 0 25px #ffae00, 0 0 35px #ffae00, 0 2px 2px #000, 0 5px 15px rgba(0,0,0,0.8);
+            animation: float-glow 5s ease-in-out infinite;
         }
-        .modal-content h2 { color: #ffd700; text-shadow: 0 0 5px #ffae00; text-align: center; }
-        .modal-content p { line-height: 1.6; }
-        .close-button {
-            display: block; width: 60%; margin: 20px auto 0 auto;
+
+        @keyframes float-glow {
+            0%, 100% {
+                transform: translateY(0);
+                text-shadow: 0 0 5px #ffd700, 0 0 15px #ffd700, 0 0 25px #ffae00, 0 0 35px #ffae00, 0 2px 2px #000, 0 5px 15px rgba(0,0,0,.8);
+            }
+            50% {
+                transform: translateY(-10px);
+                text-shadow: 0 0 10px #fff, 0 0 25px #ffd700, 0 0 40px #ffae00, 0 0 55px #ffae00, 0 12px 5px #000, 0 18px 20px rgba(0,0,0,.8);
+            }
         }
+        
+        /* 其他样式 */
+        .meta, .feedback { text-align: center; margin-bottom: 20px; text-shadow: 0 1px 2px #000; font-size: 1.1em; }
+        .meta span { margin: 0 15px; }
+        .feedback a { color: #fde047; text-decoration: none; transition: all 0.3s ease; }
+        .feedback a:hover { color: #fff; text-shadow: 0 0 10px #fde047; }
+
+        /* 折叠项按钮 */
+        .collapsible {
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(200, 160, 0, 0.4));
+            color: #fff; cursor: pointer; padding: 15px 20px; width: 100%;
+            border: 1px solid #ffd700; border-radius: 8px; text-align: left;
+            outline: none; font-size: 1.4em; transition: all 0.4s ease;
+            text-shadow: 1px 1px 0 #000, 0 0 5px rgba(0,0,0,0.7);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5); margin-bottom: 10px;
+        }
+        .collapsible:hover {
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.4), rgba(220, 180, 0, 0.6));
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); transform: scale(1.02);
+        }
+
+        /* 折叠项内容 */
+        .content {
+            padding: 0 20px; max-height: 0; overflow: hidden;
+            transition: max-height 0.5s ease-out;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px; margin-bottom: 15px;
+            font-size: 1.2em; text-shadow: 0 1px 2px #000;
+        }
+        .content div, .content ul, .content p { margin: 15px 0; }
+        .content ul { list-style-type: none; padding-left: 10px; }
+        .content li { margin-bottom: 10px; }
+        strong { color: #fde047; }
+        
+        /* 【更新】为滑动提示专门添加样式 */
+        .swipe-prompt { text-align: center; font-size: 1.3em; }
+        .swipe-prompt h4 { margin-bottom: 5px; color: #fde047; }
+        .swipe-prompt p { margin-top: 5px; }
+
     </style>
 </head>
 <body>
@@ -59,109 +109,78 @@
     您的浏览器不支持视频标签。
 </video>
 
-<div class="page-wrapper">
+<div class="container">
     <h1>玄寂界</h1>
-    <div class="button-container">
-        <button class="action-button" data-modal="modal-world">世界简介</button>
-        <button class="action-button" data-modal="modal-char">人物介绍</button>
-        <button class="action-button" data-modal="modal-rules">规则介绍</button>
-        <button class="action-button" id="start-zhengdao">开启正道仙途</button>
-        <button class="action-button" id="start-modao">开启魔道之路</button>
+    <div class="meta">
+        <span>作者: Rain's BUS</span>
+        <span>世界书: 🔴必开 🟢可选 🚖文风</span>
     </div>
-</div>
+    <div class="feedback">
+        👇感谢您的游玩，如果需要反馈点击下方链接👇<br>
+        <a href="https://discord.com/channels/1134557553011998840/1395259870592110642/1397057950509564027" target="_blank">Discord反馈频道</a>
+    </div>
 
-<!-- 信息弹窗内容 -->
-<div id="modal-world" class="modal">
-    <div class="modal-content">
-        <h2>世界简介</h2>
+    <button class="collapsible">世界简介</button>
+    <div class="content">
         <p>本界为三千小世界之一，因上古大战导致天道破碎，世界本源受损，灵气日益枯竭。修士最高只能修炼至大乘期，飞升之路已断绝，整个世界处于缓慢的衰亡过程中，修仙是此界唯一的出路。</p>
-        <button class="action-button close-button">返回</button>
     </div>
-</div>
 
-<div id="modal-char" class="modal">
-    <div class="modal-content">
-        <h2>人物介绍</h2>
-        <p><strong>云曦月:</strong> 云氏古族圣女（名存实亡），身怀被封印的荒古圣体，因无法修炼被视为废人。性格坚韧，表面清冷，内心敏感多疑，渴望证明自己。</p>
-        <p><strong>云万青:</strong> 云曦月旁系表哥，拥有稀薄的虬龙血脉，因嫉妒云曦月的嫡系身份而处处针对她，是其前期成长道路上的主要反派。</p>
-        <button class="action-button close-button">返回</button>
+    <button class="collapsible">人物介绍</button>
+    <div class="content">
+        <ul>
+            <li><strong>云曦月:</strong> 云氏古族圣女（名存实亡），身怀被封印的荒古圣体，因无法修炼被视为废人。性格坚韧，表面清冷，内心敏感多疑，渴望证明自己。</li>
+            <li><strong>云万青:</strong> 云曦月旁系表哥，拥有稀薄的虬龙血脉，因嫉妒云曦月的嫡系身份而处处针对她，是其前期成长道路上的主要反派。</li>
+        </ul>
     </div>
-</div>
 
-<div id="modal-rules" class="modal">
-    <div class="modal-content">
-        <h2>规则介绍</h2>
-        <p><strong>境界壁垒:</strong> 修为等级森严，境界差距如同天堑，越级击杀几乎不可能。</p>
-        <p><strong>资源法则:</strong> 资源极度稀缺，由各大势力严格管控，内部等级森严且鼓励“强者为尊”的内斗。</p>
-        <button class="action-button close-button">返回</button>
+    <button class="collapsible">规则介绍</button>
+    <div class="content">
+        <ul>
+            <li><strong>境界壁垒:</strong> 修为等级森严，境界差距如同天堑，越级击杀几乎不可能。</li>
+            <li><strong>资源法则:</strong> 资源极度稀缺，由各大势力严格管控，内部等级森严且鼓励“强者为尊”的内斗。</li>
+            <li><strong>修行铁律:</strong> 修行必须循序渐进，严禁修为暴涨，即便是天才也不例外。</li>
+            <li><strong>天赋品级:</strong> 天赋决定上限，下界的天才在上界可能只是平庸之辈。但荒古圣体是超越一切规则的至高体质。</li>
+        </ul>
     </div>
-</div>
 
+    <button class="collapsible">修为介绍</button>
+    <div class="content">
+         <div><strong>本界修为:</strong><ul><li>练气、筑基、金丹、元婴、化神、合体、炼虚、渡劫、大乘</li></ul></div>
+         <div><strong>上界修为:</strong><ul><li><strong>仙:</strong> 玄仙、地仙、金仙、仙尊</li><li><strong>圣:</strong> 主宰、准圣、圣人、圣帝、圣尊</li></ul></div>
+    </div>
+
+    <button class="collapsible">开始游戏</button>
+    <div class="content">
+        <!-- 【更新】根据您的要求，内容已更改为滑动提示 -->
+        <div class="swipe-prompt">
+            <h4>正道</h4>
+            <p>右滑开启故事👉</p>
+        </div>
+        <hr style="border-color: rgba(255,215,0,0.3);">
+        <div class="swipe-prompt">
+            <h4>魔道</h4>
+            <p>左滑开启故事👈</p>
+        </div>
+    </div>
+
+</div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    
-    // --- 【最终配置区】 ---
-    // 在下面引号里，粘贴您【唯一】的角色卡直接链接
-    const characterCardUrl = 'https://raw.githubusercontent.com/penguinp-star/xuanjijie/main/我的徒弟颇有圣尊之姿1_1.png';
-    // -------------------
+// 【修正】已恢复到第一版的简单折叠逻辑
+var coll = document.getElementsByClassName("collapsible");
+var i;
 
-    const startZhengdaoBtn = document.getElementById('start-zhengdao');
-    const startModaoBtn = document.getElementById('start-modao');
-    const modalButtons = document.querySelectorAll('[data-modal]');
-    const closeButtons = document.querySelectorAll('.close-button');
-
-    // 检查角色卡链接是否配置
-    function checkConfig() {
-        if (!characterCardUrl || characterCardUrl.startsWith('在这里粘贴')) {
-            alert('错误：角色卡链接尚未配置！\n\n请编辑HTML文件，在<script>标签内填入角色卡的直接链接。');
-            return false;
-        }
-        return true;
-    }
-
-    // 正道按钮 -> 触发SillyTavern命令
-    startZhengdaoBtn.addEventListener('click', function() {
-        if (!checkConfig()) return;
-        // 使用 gid=1 调用额外问候语 #1
-        const sillyTavernLink = `sillytavern://importcharacter?url=${encodeURIComponent(characterCardUrl)}&gid=1`;
-        window.location.href = sillyTavernLink;
-    });
-
-    // 魔道按钮 -> 触发SillyTavern命令
-    startModaoBtn.addEventListener('click', function() {
-        if (!checkConfig()) return;
-        // 使用 gid=2 调用额外问候语 #2
-        const sillyTavernLink = `sillytavern://importcharacter?url=${encodeURIComponent(characterCardUrl)}&gid=2`;
-        window.location.href = sillyTavernLink;
-    });
-
-    // --- 信息弹窗逻辑 ---
-    // 打开弹窗
-    modalButtons.forEach(button => {
-        const modalId = button.dataset.modal;
-        if (modalId) { // 确保不是“开始”按钮
-            const modal = document.getElementById(modalId);
-            button.addEventListener('click', () => {
-                modal.style.display = 'flex';
-            });
-        }
-    });
-
-    // 关闭弹窗
-    closeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            button.closest('.modal').style.display = 'none';
-        });
-    });
-
-    // 点击弹窗外部也可关闭
-    window.addEventListener('click', (event) => {
-        if (event.target.classList.contains('modal')) {
-            event.target.style.display = 'none';
-        }
-    });
-});
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
 </script>
 
 </body>
