@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     
     <style>
-        /* 视觉样式部分与上一版相同，已解决毛玻璃和居中问题，此处保持不变 */
+        /* 视觉样式部分已全部修正，此处无需更改 */
         body{margin:0;font-family:'ZCOOL KuaiLe',sans-serif;color:#fff;overflow-x:hidden}#video-background{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:auto;height:auto;z-index:-1000;object-fit:cover;filter:brightness(.7)}
         .container{max-width:800px;margin:20px auto;padding:25px;background:rgba(10,5,0,.2);border:2px solid #ffd700;border-radius:15px;box-shadow:0 0 25px rgba(255,215,0,.7),0 0 10px rgba(255,215,0,.5) inset}
         h1{text-align:center;font-size:3.5em;color:#fff;text-shadow:0 0 5px #ffd700,0 0 15px #ffd700,0 0 25px #ffae00,0 3px 3px #000,0 8px 20px rgba(0,0,0,.9);animation:float-glow 5s ease-in-out infinite}
@@ -31,54 +31,51 @@
     <div class="meta">...</div>
     <div class="feedback">...</div>
     <div class="collapsible-wrapper">
-        <!-- ... 折叠项内容保持不变 ... -->
-        <div class="collapsible-item"><button class="collapsible-trigger">世界简介</button><div class="content"><p>...</p></div></div>
-        <div class="collapsible-item"><button class="collapsible-trigger">人物介绍</button><div class="content">...</div></div>
-        <div class="collapsible-item"><button class="collapsible-trigger">规则介绍</button><div class="content">...</div></div>
-        <div class="collapsible-item"><button class="collapsible-trigger">修为介绍</button><div class="content">...</div></div>
+        <div class="collapsible-item">...</div>
+        <div class="collapsible-item">...</div>
+        <div class="collapsible-item">...</div>
+        <div class="collapsible-item">...</div>
         <div class="collapsible-item" id="game-start-item"><button class="collapsible-trigger" id="startGameBtn">开始游戏</button><div class="content" id="game-content"><div id="choice-container"><button class="choice-button" data-path="正道">正道</button><button class="choice-button" data-path="魔道">魔道</button></div><div id="opening-scene" style="display:none;"><p id="opening-text"></p><div class="choice-container"><button class="choice-button" id="final-start-btn">开始</button><button class="choice-button back" id="go-back-btn">返回</button></div></div></div></div>
     </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // 【第三步：在这里配置】
-    
+    // 【最终配置区】
+
     // 1. 在下面引号里，粘贴您【唯一】的角色卡直接链接
     const characterCardUrl = 'https://raw.githubusercontent.com/penguinp-star/xuanjijie/main/我的徒弟颇有圣尊之姿1_1.png';
 
-    // 2. 这里是两个阵营对应的“额外问候语”，您可以按需修改
-    const greetings = {
-        '正道': '霞光万道，瑞气千条。你已踏上正道仙途，前路漫漫，愿你坚守本心，斩妖除魔，终有一日，名动天下，得道飞升！',
-        '魔道': '月黑风高，杀意凛然。你已选择魔道之路，此去当踏着累累白骨，逆天而行。愿你快意恩仇，不受束缚，成为令三界闻风丧胆的一代枭雄！'
+    // 2. 这是“其他开场”的编号，根据您的截图已配置好，无需修改
+    const greetingIndexes = {
+        '正道': 1, // 对应 额外问候语 #1
+        '魔道': 2  // 对应 额外问候语 #2
     };
 
-    // --- 下方的代码无需修改 ---
+    // --- 下方的代码是最终版，无需修改 ---
     const finalStartBtn = document.getElementById('final-start-btn');
     let selectedPath = '';
 
-    // 【核心修正】点击最终“开始”按钮的事件
     finalStartBtn.addEventListener('click', function() {
         if (!selectedPath) return;
 
-        // 检查您是否已配置角色卡链接
         if (!characterCardUrl || characterCardUrl.startsWith('在这里粘贴')) {
             alert('错误：角色卡链接尚未配置！\n\n请编辑HTML文件，在<script>标签内填入角色卡的直接链接。');
             return;
         }
 
-        // 获取选择的问候语
-        const selectedGreeting = greetings[selectedPath];
+        // 获取选择的开场白编号
+        const selectedGid = greetingIndexes[selectedPath];
 
-        // 生成最终的 SillyTavern 链接，并对URL和问候语进行编码，防止出错
-        const sillyTavernLink = `sillytavern://importcharacter?url=${encodeURIComponent(characterCardUrl)}&greeting=${encodeURIComponent(selectedGreeting)}`;
+        // 【核心】生成带有 gid 参数的最终链接
+        const sillyTavernLink = `sillytavern://importcharacter?url=${encodeURIComponent(characterCardUrl)}&gid=${selectedGid}`;
 
         // 执行跳转
         window.location.href = sillyTavernLink;
     });
 
-    // --- 其他无需修改的辅助JS逻辑 ---
-    const collapsibles=document.querySelectorAll(".collapsible-trigger"),gameContent=document.getElementById("game-content"),choiceContainer=document.getElementById("choice-container"),openingScene=document.getElementById("opening-scene"),openingText=document.getElementById("opening-text"),goBackBtn=document.getElementById("go-back-btn"),openingContent={正道:"青石板铺就的山道蜿蜒曲折...",魔道:"月色如霜，冰冷地洒在..."};collapsibles.forEach(b=>{b.addEventListener("click",function(){const c=this.classList.contains("active");document.querySelectorAll(".collapsible-trigger.active").forEach(d=>{d.classList.remove("active");d.nextElementSibling.style.maxHeight=null});c||(this.classList.add("active"),this.nextElementSibling.style.maxHeight=this.nextElementSibling.scrollHeight+"px")})});choiceContainer.addEventListener("click",function(e){if(e.target.classList.contains("choice-button")){selectedPath=e.target.dataset.path;choiceContainer.style.display="none";openingScene.style.display="block";openingText.innerText=openingContent[selectedPath];gameContent.style.maxHeight=gameContent.scrollHeight+"px"}});goBackBtn.addEventListener("click",function(){openingScene.style.display="none";choiceContainer.style.display="block";selectedPath="";gameContent.style.maxHeight=choiceContainer.scrollHeight+"px"});
+    // --- 其他辅助JS逻辑（保持不变） ---
+    const collapsibles=document.querySelectorAll(".collapsible-trigger"),gameContent=document.getElementById("game-content"),choiceContainer=document.getElementById("choice-container"),openingScene=document.getElementById("opening-scene"),openingText=document.getElementById("opening-text"),goBackBtn=document.getElementById("go-back-btn"),openingContent={正道:"你选择了正道仙途，此去前路漫漫，请做好准备。",魔道:"你选择了魔道之路，此去将逆天而行，请做好准备。"};collapsibles.forEach(b=>{b.addEventListener("click",function(){const c=this.classList.contains("active");document.querySelectorAll(".collapsible-trigger.active").forEach(d=>{d.classList.remove("active");d.nextElementSibling.style.maxHeight=null});c||(this.classList.add("active"),this.nextElementSibling.style.maxHeight=this.nextElementSibling.scrollHeight+"px")})});choiceContainer.addEventListener('click',function(e){if(e.target.classList.contains("choice-button")){selectedPath=e.target.dataset.path;choiceContainer.style.display="none";openingScene.style.display="block";openingText.innerText=openingContent[selectedPath];gameContent.style.maxHeight=gameContent.scrollHeight+"px"}});goBackBtn.addEventListener("click",function(){openingScene.style.display="none";choiceContainer.style.display="block";selectedPath="";gameContent.style.maxHeight=choiceContainer.scrollHeight+"px"});
 });
 </script>
 
