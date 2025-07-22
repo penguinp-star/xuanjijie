@@ -4,170 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>玄寂界 - 金光降世</title>
-    <!-- 引入像素字体 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     
     <style>
         /* 基础与视频背景设置 */
-        body {
-            margin: 0;
-            font-family: 'ZCOOL KuaiLe', sans-serif; /* 全局使用像素字体 */
-            color: #fff;
-            overflow-x: hidden;
-        }
-
+        body { margin: 0; font-family: 'ZCOOL KuaiLe', sans-serif; color: #fff; overflow-x: hidden; }
         #video-background {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
+            position: fixed; right: 0; bottom: 0;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto;
             z-index: -1000;
-            object-fit: cover; /* 保证视频铺满背景 */
-            filter: brightness(0.6) blur(3px); /* 给视频一个滤镜，使其不那么抢眼 */
+            object-fit: cover; /* 保证视频铺满并保持比例，多余部分裁剪 */
+            filter: brightness(0.7) blur(2px); /* 提高视频亮度并轻微模糊，突出前景 */
         }
-
         /* 核心容器 */
         .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 25px;
-            background: rgba(0, 0, 0, 0.5); /* 半透明背景，凸显视频 */
-            border: 2px solid #ffd700; /* 金色边框 */
-            border-radius: 15px;
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.5) inset; /* 金光外发光与内发光 */
-            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+            max-width: 800px; margin: 20px auto; padding: 25px;
+            background: rgba(0, 0, 0, 0.3); /*【修正】大幅降低背景不透明度，透出视频 */
+            border: 2px solid #ffd700; border-radius: 15px;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), 0 0 10px rgba(255, 215, 0, 0.5) inset;
+            backdrop-filter: blur(8px); /*【修正】稍微降低毛玻璃效果 */
         }
-
         /* 标题 - 仙气飘飘、金光、立体感 */
         h1 {
-            text-align: center;
-            font-size: 3.5em;
-            color: #fff;
-            text-shadow: 
-                0 0 5px #ffd700,
-                0 0 15px #ffd700,
-                0 0 25px #ffae00,
-                0 0 35px #ffae00,
-                0 2px 2px #000, /* 底部阴影，增强立体感 */
-                0 5px 15px rgba(0,0,0,0.8); /* 更深的阴影，拉开层次 */
-            animation: float-glow 5s ease-in-out infinite; /* 浮动与呼吸光晕动画 */
+            text-align: center; font-size: 3.5em; color: #fff;
+            text-shadow: 0 0 5px #ffd700, 0 0 15px #ffd700, 0 0 25px #ffae00, 0 0 35px #ffae00, 0 2px 2px #000, 0 5px 15px rgba(0,0,0,0.8);
+            animation: float-glow 5s ease-in-out infinite;
         }
-
         @keyframes float-glow {
             0%, 100% {
                 transform: translateY(0);
-                text-shadow: 
-                    0 0 5px #ffd700, 0 0 15px #ffd700, 0 0 25px #ffae00, 
-                    0 0 35px #ffae00, 0 2px 2px #000, 0 5px 15px rgba(0,0,0,0.8);
+                text-shadow: 0 0 5px #ffd700, 0 0 15px #ffd700, 0 0 25px #ffae00, 0 0 35px #ffae00, 0 2px 2px #000, 0 5px 15px rgba(0,0,0,.8);
             }
             50% {
                 transform: translateY(-10px);
-                text-shadow: 
-                    0 0 10px #fff, 0 0 25px #ffd700, 0 0 40px #ffae00, 
-                    0 0 55px #ffae00, 0 12px 5px #000, 0 18px 20px rgba(0,0,0,0.8);
+                text-shadow: 0 0 10px #fff, 0 0 25px #ffd700, 0 0 40px #ffae00, 0 0 55px #ffae00, 0 12px 5px #000, 0 18px 20px rgba(0,0,0,.8);
             }
         }
-
         /* 元信息与反馈链接 */
-        .meta, .feedback {
-            text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 0 1px 2px #000; /* 轻微立体感 */
-            font-size: 1.1em;
-        }
+        .meta, .feedback { text-align: center; margin-bottom: 20px; text-shadow: 0 1px 2px #000; font-size: 1.1em; }
         .meta span { margin: 0 15px; }
-        .feedback a {
-            color: #fde047; /* 亮金色 */
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .feedback a:hover {
-            color: #fff;
-            text-shadow: 0 0 10px #fde047;
-        }
-
+        .feedback a { color: #fde047; text-decoration: none; transition: all 0.3s ease; }
+        .feedback a:hover { color: #fff; text-shadow: 0 0 10px #fde047; }
+        
         /* 折叠项 */
-        .collapsible-item {
-            margin-bottom: 15px;
-        }
+        .collapsible-wrapper { transition: opacity .8s ease, display .8s ease; }
+        .collapsible-item { margin-bottom: 15px; }
         .collapsible-trigger {
-            background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(200, 160, 0, 0.4));
-            color: #fff;
-            cursor: pointer;
-            padding: 15px 20px;
-            width: 100%;
-            border: 1px solid #ffd700;
-            border-radius: 8px;
-            text-align: left;
-            outline: none;
-            font-size: 1.4em;
-            transition: all 0.4s ease;
-            text-shadow: 1px 1px 0 #000, 0 0 5px rgba(0,0,0,0.7); /* 像素字体描边和阴影 */
+            background: linear-gradient(45deg, rgba(255, 215, 0, 0.2), rgba(200, 160, 0, 0.4)); color: #fff;
+            cursor: pointer; padding: 15px 20px; width: 100%; border: 1px solid #ffd700;
+            border-radius: 8px; text-align: left; outline: none; font-size: 1.4em;
+            transition: all 0.4s ease; text-shadow: 1px 1px 0 #000, 0 0 5px rgba(0,0,0,0.7);
             box-shadow: 0 2px 5px rgba(0,0,0,0.5);
         }
         .collapsible-trigger:hover, .collapsible-trigger.active {
             background: linear-gradient(45deg, rgba(255, 215, 0, 0.4), rgba(220, 180, 0, 0.6));
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5); transform: scale(1.02);
         }
-
         .content {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* 平滑的展开动画 */
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 0 0 8px 8px;
-            border: 1px solid #ffd700;
-            border-top: none;
-            font-size: 1.2em;
-            text-shadow: 0 1px 2px #000;
+            padding: 0 20px; max-height: 0; overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: rgba(0, 0, 0, 0.3); border-radius: 0 0 8px 8px;
+            border: 1px solid #ffd700; border-top: none;
+            font-size: 1.2em; text-shadow: 0 1px 2px #000;
         }
         .content div, .content ul, .content p { margin: 15px 0; }
         .content ul { list-style-type: none; padding-left: 10px; }
         .content li { margin-bottom: 10px; }
-        strong { color: #fde047; } /* 关键信息用金色强调 */
-
+        strong { color: #fde047; }
+        
         /* 按钮样式 */
         .choice-container { text-align: center; margin-top: 20px; padding-bottom: 15px; }
         .choice-button {
             font-family: 'ZCOOL KuaiLe', sans-serif;
-            background: #8b5cf6; /* 紫色系按钮，与金色背景形成对比 */
-            background: linear-gradient(45deg, #a78bfa, #7c3aed);
-            color: white;
-            border: 2px solid #c4b5fd;
-            padding: 12px 25px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 1.2em;
-            margin: 8px 5px;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            text-shadow: 1px 1px 0 #000;
+            background: linear-gradient(45deg, #a78bfa, #7c3aed); color: white;
+            border: 2px solid #c4b5fd; padding: 12px 25px;
+            text-align: center; text-decoration: none; display: inline-block;
+            font-size: 1.2em; margin: 8px 5px; cursor: pointer; border-radius: 8px;
+            transition: all 0.3s ease; text-shadow: 1px 1px 0 #000;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.2), inset 0 -2px 1px rgba(255,255,255,0.2);
         }
-        .choice-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5), 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 1px rgba(255,255,255,0.2);
+        .choice-button:hover { transform: translateY(-2px); box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5), 0 2px 5px rgba(0, 0, 0, 0.3), inset 0 -2px 1px rgba(255,255,255,0.2); }
+        .choice-button.back { background: linear-gradient(45deg, #6b7280, #4b5563); border-color: #9ca3af; }
+
+        /* 问候语区域样式 */
+        .greeting-section {
+            display: none; padding: 20px; text-align: center;
+            animation: fadeIn 1.5s ease;
         }
-        .choice-button.back {
-            background: linear-gradient(45deg, #6b7280, #4b5563);
-            border-color: #9ca3af;
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-<!-- 视频背景 -->
+<!-- 【修正】已填入您提供的视频链接 -->
 <video autoplay muted loop id="video-background">
-    <!-- 请将 'YOUR_VIDEO.mp4' 替换成你的视频文件路径 -->
     <source src="https://raw.githubusercontent.com/penguinp-star/xuanjijie/main/lv_0_20250722185633.mp4" type="video/mp4">
     您的浏览器不支持视频标签。
 </video>
@@ -190,7 +123,6 @@
                 <p>本界为三千小世界之一，因上古大战导致天道破碎，世界本源受损，灵气日益枯竭。修士最高只能修炼至大乘期，飞升之路已断绝，整个世界处于缓慢的衰亡过程中，修仙是此界唯一的出路。</p>
             </div>
         </div>
-
         <div class="collapsible-item">
             <button class="collapsible-trigger">人物介绍</button>
             <div class="content">
@@ -200,7 +132,6 @@
                 </ul>
             </div>
         </div>
-
         <div class="collapsible-item">
             <button class="collapsible-trigger">规则介绍</button>
             <div class="content">
@@ -212,26 +143,13 @@
                 </ul>
             </div>
         </div>
-        
         <div class="collapsible-item">
             <button class="collapsible-trigger">修为介绍</button>
             <div class="content">
-                 <div>
-                    <strong>本界修为:</strong>
-                    <ul>
-                        <li>练气、筑基、金丹、元婴、化神、合体、炼虚、渡劫、大乘</li>
-                    </ul>
-                </div>
-                <div>
-                    <strong>上界修为:</strong>
-                    <ul>
-                        <li><strong>仙:</strong> 玄仙、地仙、金仙、仙尊</li>
-                        <li><strong>圣:</strong> 主宰、准圣、圣人、圣帝、圣尊</li>
-                    </ul>
-                </div>
+                 <div><strong>本界修为:</strong><ul><li>练气、筑基、金丹、元婴、化神、合体、炼虚、渡劫、大乘</li></ul></div>
+                 <div><strong>上界修为:</strong><ul><li><strong>仙:</strong> 玄仙、地仙、金仙、仙尊</li><li><strong>圣:</strong> 主宰、准圣、圣人、圣帝、圣尊</li></ul></div>
             </div>
         </div>
-
         <div class="collapsible-item" id="game-start-item">
             <button class="collapsible-trigger" id="startGameBtn">开始游戏</button>
             <div class="content" id="game-content">
@@ -249,18 +167,30 @@
             </div>
         </div>
     </div>
+
+    <div id="greeting-zhengdao" class="greeting-section">
+        <h2>-- 额外问候语 #1：正道仙途 --</h2>
+        <p>霞光万道，瑞气千条。你已踏上正道仙途，前路漫漫，愿你坚守本心，斩妖除魔，终有一日，名动天下，得道飞升！</p>
+    </div>
+    <div id="greeting-modao" class="greeting-section">
+        <h2>-- 额外问候语 #2：魔道枭雄 --</h2>
+        <p>月黑风高，杀意凛然。你已选择魔道之路，此去当踏着累累白骨，逆天而行。愿你快意恩仇，不受束缚，成为令三界闻风丧胆的一代枭雄！</p>
+    </div>
 </div>
 
 <script>
+// 【修正】这是完整的、可运行的JavaScript代码
 document.addEventListener('DOMContentLoaded', function() {
     const collapsibles = document.querySelectorAll('.collapsible-trigger');
-    const gameStartBtn = document.getElementById('startGameBtn');
     const gameContent = document.getElementById('game-content');
     const choiceContainer = document.getElementById('choice-container');
     const openingScene = document.getElementById('opening-scene');
     const openingText = document.getElementById('opening-text');
     const goBackBtn = document.getElementById('go-back-btn');
     const finalStartBtn = document.getElementById('final-start-btn');
+    const collapsibleWrapper = document.querySelector('.collapsible-wrapper');
+    const greetingZhengdao = document.getElementById('greeting-zhengdao');
+    const greetingModao = document.getElementById('greeting-modao');
     
     let selectedPath = '';
     const openingContent = {
@@ -270,22 +200,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     collapsibles.forEach(button => {
         button.addEventListener('click', function() {
-            // 切换 active 状态用于样式
-            this.classList.toggle('active');
-            const content = this.nextElementSibling;
+            const isActive = this.classList.contains('active');
             
-            // 核心折叠逻辑
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-            } else {
-                // 关闭其他已打开的项
-                document.querySelectorAll('.collapsible-trigger.active').forEach(activeButton => {
-                    if (activeButton !== this) {
-                        activeButton.classList.remove('active');
-                        activeButton.nextElementSibling.style.maxHeight = null;
-                    }
-                });
-                // 打开当前项
+            // 关闭所有已打开的项
+            document.querySelectorAll('.collapsible-trigger.active').forEach(activeButton => {
+                activeButton.classList.remove('active');
+                activeButton.nextElementSibling.style.maxHeight = null;
+            });
+
+            // 如果当前项不是刚刚被关闭的那个，则打开它
+            if (!isActive) {
+                this.classList.add('active');
+                const content = this.nextElementSibling;
                 content.style.maxHeight = content.scrollHeight + 'px';
             }
         });
@@ -299,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function() {
             openingScene.style.display = 'block';
             openingText.innerText = openingContent[selectedPath];
             
-            // 更新父容器高度
             gameContent.style.maxHeight = gameContent.scrollHeight + 'px';
         }
     });
@@ -309,18 +234,26 @@ document.addEventListener('DOMContentLoaded', function() {
         choiceContainer.style.display = 'block';
         selectedPath = '';
         
-        // 更新父容器高度
         gameContent.style.maxHeight = choiceContainer.scrollHeight + 'px';
     });
 
     finalStartBtn.addEventListener('click', function() {
         if(selectedPath) {
-            alert(`即将进入【${selectedPath}】的开场...`);
-            // 此处可以替换为页面跳转逻辑
-            // window.location.href = `/${selectedPath}.html`;
+            collapsibleWrapper.style.opacity = '0';
+            
+            // 在动画结束后再隐藏，避免闪烁
+            setTimeout(() => {
+                collapsibleWrapper.style.display = 'none';
+                if (selectedPath === '正道') {
+                    greetingZhengdao.style.display = 'block';
+                } else if (selectedPath === '魔道') {
+                    greetingModao.style.display = 'block';
+                }
+            }, 800); // 这个时间要和CSS里的transition时间匹配
         }
     });
 });
 </script>
+
 </body>
 </html>
